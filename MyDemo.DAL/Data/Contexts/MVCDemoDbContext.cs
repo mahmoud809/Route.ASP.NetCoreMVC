@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyDemo.DAL.Contexts
+namespace MyDemo.DAL.Data.Contexts
 {
     public class MVCDemoDbContext : DbContext
     {
-        public MVCDemoDbContext(DbContextOptions<MVCDemoDbContext> options):base(options)
+        public MVCDemoDbContext(DbContextOptions<MVCDemoDbContext> options) : base(options)
         {
             //options will override onConfiguring of DbContext Class it self
             //And i will send the connection string in startup class and inject it here as shown.

@@ -1,5 +1,5 @@
 ﻿using MyDemo.BLL.Interfaces;
-using MyDemo.DAL.Contexts;
+using MyDemo.DAL.Data.Contexts;
 using MyDemo.DAL.Models;
 using System;
 using System.Collections.Generic;

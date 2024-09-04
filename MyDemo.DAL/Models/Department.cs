@@ -18,7 +18,7 @@ namespace MyDemo.DAL.Models
         [Required(ErrorMessage ="Name is required..!")] // For FrontEnd
         public string Name { get; set; }
         
-        [DisplayName("Date Of Creation")]
+        [Display(Name = "Date Of Creation")]
         public DateTime DateOfCreation { get; set; }
     }
 }

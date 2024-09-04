@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyDemo.BLL.Interfaces;
+using MyDemo.DAL.Models;
 
 namespace MyDemo.PL.Controllers
 {
@@ -38,5 +39,25 @@ namespace MyDemo.PL.Controllers
 
             return View(departments);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Department department)
+        {
+            //We Should make validations before submit this passing department => [Server side validation]
+            if(ModelState.IsValid)
+            {
+                var recordAffected = _departmentRepository.AddDepartment(department);
+                if(recordAffected > 0)
+                    return RedirectToAction(nameof(Index));
+            }
+            return View(department);
+        }
+
     }
 }

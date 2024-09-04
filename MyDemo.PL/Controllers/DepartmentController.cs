@@ -34,7 +34,9 @@ namespace MyDemo.PL.Controllers
         // /Department/Index
         public IActionResult Index()
         {
-            return View();
+            var departments = _departmentRepository.GetAllDepartments();
+
+            return View(departments);
         }
     }
 }

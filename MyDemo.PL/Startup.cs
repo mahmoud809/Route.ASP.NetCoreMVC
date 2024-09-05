@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyDemo.BLL.Interfaces;
+using MyDemo.BLL.Repositories;
 using MyDemo.DAL.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,13 @@ namespace MyDemo.PL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Allow Dependancy to MVC Project
             services.AddControllersWithViews();
+            
+            //Allow Dependancy to any Class Implements IDepartmentRepository
+            //AddScoped means => Request åíÝÖá ÚÇíÔ Øæá ÝÊÑÉ Çá  object Çä Çá 
+            services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //Ask Clr If any one ask you for creating an object from any class implementing IDepartmentRepository 
+                                                                                //Create it and inject it.
 
             services.AddDbContext<MVCDemoDbContext>(options => 
             
@@ -57,6 +65,11 @@ namespace MyDemo.PL
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                //endpoints.MapControllerRoute(
+                //name: "department",
+                //pattern: "Department/{action=Index}/{id?}",
+                //defaults: new { controller = "Department" });
             });
         }
     }

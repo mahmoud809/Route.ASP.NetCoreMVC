@@ -71,5 +71,36 @@ namespace MyDemo.PL.Controllers
             return View(department);
         }
 
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+            var department = _departmentRepository.GetDepartmentById(id.Value);
+            if( department is null)
+                return NotFound();
+            return View(department);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Department department , [FromRoute] int id)
+        {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    int AffectedRow = _departmentRepository.UpdateDepartment(department);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (System.Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+            }
+            
+            return View(department);
+            
+            
+        }
     }
 }

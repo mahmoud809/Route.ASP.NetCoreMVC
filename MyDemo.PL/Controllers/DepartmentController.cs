@@ -99,10 +99,33 @@ namespace MyDemo.PL.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            
             return View(department);
             
             
+            
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            return Details(id, "Delete");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Department department, [FromRoute] int id)
+        {
+            if (id != department.Id)
+                return BadRequest();
+
+            try
+            {
+                int AffectedRows = _departmentRepository.DeleteDepartment(department);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(department);
+            }
         }
     }
 }

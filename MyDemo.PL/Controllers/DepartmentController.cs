@@ -59,7 +59,7 @@ namespace MyDemo.PL.Controllers
             return View(department);
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id , string ViewName = "Details")
         {
             if(id is null)
                 return BadRequest();
@@ -68,18 +68,20 @@ namespace MyDemo.PL.Controllers
             if(department is null)
                 return NotFound();
 
-            return View(department);
+            return View(ViewName, department);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if (id is null)
-                return BadRequest();
-            var department = _departmentRepository.GetDepartmentById(id.Value);
-            if( department is null)
-                return NotFound();
-            return View(department);
+
+            return Details(id , "Edit");
+            //if (id is null)
+            //    return BadRequest();
+            //var department = _departmentRepository.GetDepartmentById(id.Value);
+            //if( department is null)
+            //    return NotFound();
+            //return View(department);
         }
 
         [HttpPost]

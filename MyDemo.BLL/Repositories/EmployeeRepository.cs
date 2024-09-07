@@ -9,39 +9,58 @@ using System.Threading.Tasks;
 
 namespace MyDemo.BLL.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        private readonly MVCDemoDbContext _dbContext;
+        private readonly MVCDemoDbContext _context;
 
-        public EmployeeRepository(MVCDemoDbContext dbContext)
+        public EmployeeRepository(MVCDemoDbContext context):base(context)
         {
-            _dbContext = dbContext;
-        }
-        public int Add(Employee employee)
-        {
-            _dbContext.Employees.Add(employee);
-            return _dbContext.SaveChanges();
+            _context = context;
         }
 
-        public int Delete(Employee employee)
+        public IQueryable<Employee> GetEmployeeByAddress(string address)
         {
-            _dbContext.Employees.Remove(employee);
-            return _dbContext.SaveChanges();
+           return _context.Employees.Where(E => E.Address == address);
         }
 
-        public IEnumerable<Employee> GetAll()
-            => _dbContext.Employees.ToList();
-        
 
-        public Employee GetById(int id)
-        {
-            return _dbContext.Employees.Find(id);
-        }
 
-        public int Update(Employee employee)
-        {
-            _dbContext.Employees.Update(employee);
-            return _dbContext.SaveChanges();
+
+
+            #region Before Using Generic Repository
+            ///private readonly MVCDemoDbContext _dbContext;
+            ///
+            ///public EmployeeRepository(MVCDemoDbContext dbContext)
+            ///{
+            ///    _dbContext = dbContext;
+            ///}
+            ///public int Add(Employee employee)
+            ///{
+            ///    _dbContext.Employees.Add(employee);
+            ///    return _dbContext.SaveChanges();
+            ///}
+            ///
+            ///public int Delete(Employee employee)
+            ///{
+            ///    _dbContext.Employees.Remove(employee);
+            ///    return _dbContext.SaveChanges();
+            ///}
+            ///
+            ///public IEnumerable<Employee> GetAll()
+            ///    => _dbContext.Employees.ToList();
+            ///
+            ///
+            ///public Employee GetById(int id)
+            ///{
+            ///    return _dbContext.Employees.Find(id);
+            ///}
+            ///
+            ///public int Update(Employee employee)
+            ///{
+            ///    _dbContext.Employees.Update(employee);
+            ///    return _dbContext.SaveChanges();
+            ///} 
+            #endregion
+
         }
     }
-}

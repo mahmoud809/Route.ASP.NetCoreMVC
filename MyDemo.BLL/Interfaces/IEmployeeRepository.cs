@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 
 namespace MyDemo.BLL.Interfaces
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository : IGenericRepository<Employee>
     {
-        //Signature of 5 methods
-        IEnumerable<Employee> GetAll();
-        Employee GetById(int id);
-        int Add(Employee employee);
-        int Update(Employee employee);
-        int Delete(Employee employee);
+        IQueryable<Employee> GetEmployeeByAddress(string address);
+
+        #region Before Using Generic Repository
+        ///Signature of 5 methods
+        ///IEnumerable<Employee> GetAll();
+        ///Employee GetById(int id);
+        ///int Add(Employee employee);
+        ///int Update(Employee employee);
+        ///int Delete(Employee employee); 
+        #endregion
     }
 }

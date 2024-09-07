@@ -35,7 +35,7 @@ namespace MyDemo.PL.Controllers
         // /Department/Index
         public IActionResult Index()
         {
-            var departments = _departmentRepository.GetAllDepartments();
+            var departments = _departmentRepository.GetAll();
 
             return View(departments);
         }
@@ -52,7 +52,7 @@ namespace MyDemo.PL.Controllers
             //We Should make validations before submit this passing department => [Server side validation]
             if(ModelState.IsValid)
             {
-                var recordAffected = _departmentRepository.AddDepartment(department);
+                var recordAffected = _departmentRepository.Add(department);
                 if(recordAffected > 0)
                     return RedirectToAction(nameof(Index));
             }
@@ -64,7 +64,7 @@ namespace MyDemo.PL.Controllers
             if(id is null)
                 return BadRequest();
 
-            var department = _departmentRepository.GetDepartmentById(id.Value);
+            var department = _departmentRepository.GetById(id.Value);
             if(department is null)
                 return NotFound();
 
@@ -91,7 +91,7 @@ namespace MyDemo.PL.Controllers
             {
                 try
                 {
-                    int AffectedRow = _departmentRepository.UpdateDepartment(department);
+                    int AffectedRow = _departmentRepository.Update(department);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -118,7 +118,7 @@ namespace MyDemo.PL.Controllers
 
             try
             {
-                int AffectedRows = _departmentRepository.DeleteDepartment(department);
+                int AffectedRows = _departmentRepository.Delete(department);
                 return RedirectToAction(nameof(Index));
             }
             catch (System.Exception ex)

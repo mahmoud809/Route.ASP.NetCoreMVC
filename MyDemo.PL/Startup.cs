@@ -33,7 +33,7 @@ namespace MyDemo.PL
             //Allow Dependancy to any Class Implements IDepartmentRepository
             //AddScoped means => Request åíÝÖá ÚÇíÔ Øæá ÝÊÑÉ Çá  object Çä Çá 
             services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //Ask Clr If any one ask you for creating an object from any class implementing IDepartmentRepository 
-                                                                                //Create it and inject it.
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();                                                                    //Create it and inject it.
 
             services.AddDbContext<MVCDemoDbContext>(options => 
             

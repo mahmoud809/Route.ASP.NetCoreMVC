@@ -7,23 +7,8 @@
 <h1>Department @Model.Name Details</h1>
 
 <form>
-    <div>
-        <label class="col-form-label" asp-for="Code"></label>
-        <input readonly class="form-control" asp-for="Code" />
-        
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Name"></label>
-        <input readonly class="form-control" asp-for="Name" />
-        
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="DateOfCreation"></label>
-        <input readonly class="form-control mb-3" asp-for="DateOfCreation" />
-
-    </div>
+   
+    <partial name="PartialViews/_DetailsDeleteDepartmentView" />
 
     <a class="btn btn-secondary" asp-controller="Department" asp-action="Edit" asp-route-id = "@Model.Id">Edit</a> |
     <a class="btn btn-light" asp-controller="Department" asp-action="Index">Back To List</a>

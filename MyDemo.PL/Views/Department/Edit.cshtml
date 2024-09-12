@@ -10,23 +10,8 @@
 @* This is useful for providing users with a clear indication of what needs to be fixed when the form submission fails.*@
  
 <form asp-action="Edit">
-    <div>
-        <label class="col-form-label" asp-for="Code"></label>
-        <input class="form-control" asp-for="Code" />
-        <span asp-validation-for="Code" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Name"></label>
-        <input class="form-control" asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="DateOfCreation"></label>
-        <input class="form-control mb-3" asp-for="DateOfCreation" />
-
-    </div>
+   
+    <partial name="PartialViews/_CreateEditDepartmentView" />
 
     <input type="submit" value="Save Changes" class="btn btn-outline-success" /> |
     <a class="btn btn-light" asp-controller="Department" asp-action="Index">Back To List</a>
@@ -35,7 +20,5 @@
 
 @section ValidateScriptSection
 {
-    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

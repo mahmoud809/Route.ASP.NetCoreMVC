@@ -43,21 +43,8 @@
                     <td>@employee.IsActive</td>
                     <td>@employee.HireDate</td>
                     <td>@employee.DateOfCreation</td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-outline-warning">
-                            <i class="fa-solid fa-eye"></i> Details
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-outline-success">
-                            <i class="fa-solid fa-pen-to-square"></i> Update
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-outline-danger">
-                            <i class="fa-solid fa-trash"></i> Delete
-                        </a>
-                    </td>
+
+                    <partial name="_ButtonsPartialView" model="@employee.Id" />
 
                 </tr>
 

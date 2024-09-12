@@ -7,11 +7,13 @@ namespace MyDemo.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmployeeRepository employeeRepository) //1-Ask CLR for Creating an Object from Class Implementing IEmployeeRepository
+        public EmployeeController(IEmployeeRepository employeeRepository , IDepartmentRepository departmentRepository) //1-Ask CLR for Creating an Object from Class Implementing IEmployeeRepository
                                                                                 //2-Allow dependancy into the Container of servies    
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         // /Employee/Index
@@ -25,6 +27,7 @@ namespace MyDemo.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["Departments"] = _departmentRepository.GetAll();
             return View();
         }
 

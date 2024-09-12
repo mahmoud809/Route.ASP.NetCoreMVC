@@ -38,5 +38,10 @@ namespace MyDemo.DAL.Models
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; }
+
+        public int? DepartmentId { get; set; }
+
+        //Navigational Property [One]
+        public Department Department { get; set; }
     }
 }

@@ -19,6 +19,7 @@
                 <th>@Html.DisplayNameFor(E => E.Age)</th>
                 <th>@Html.DisplayNameFor(E => E.Salary)</th>
                 <th>@Html.DisplayNameFor(E => E.Address)</th>
+                <th>@Html.DisplayNameFor(E => E.Department)</th>
                 <th>@Html.DisplayNameFor(E => E.Email)</th>
                 <th>@Html.DisplayNameFor(E => E.Phone)</th>
                 <th>@Html.DisplayNameFor(E => E.IsActive)</th>
@@ -38,6 +39,8 @@
                     <td>@employee.Age</td>
                     <td>@employee.Salary</td>
                     <td>@employee.Address</td>
+                    @* <td>@employee.Department?.Name ?? "NA"</td> *@
+                    <td>@Html.DisplayFor(M => employee.Department.Name)</td> @* Cuz if Department came with NULL *@
                     <td>@employee.Email</td>
                     <td>@employee.Phone</td>
                     <td>@employee.IsActive</td>

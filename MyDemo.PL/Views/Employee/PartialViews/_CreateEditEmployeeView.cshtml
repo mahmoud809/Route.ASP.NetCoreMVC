@@ -60,7 +60,7 @@
 
 <div class="form-group">
     <label class="col-form-label" asp-for="Department"></label>
-    <select class="form-control" asp-items="@departments">
+    <select class="form-control" asp-for="DepartmentId" asp-items="@departments">
       <option value="@null">-- Select Department --</option>
     </select>
 </div>

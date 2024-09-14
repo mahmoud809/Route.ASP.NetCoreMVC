@@ -23,44 +23,49 @@ namespace MyDemo.BLL.Repositories
            return _context.Employees.Where(E => E.Address == address);
         }
 
-
-
-
-
-            #region Before Using Generic Repository
-            ///private readonly MVCDemoDbContext _dbContext;
-            ///
-            ///public EmployeeRepository(MVCDemoDbContext dbContext)
-            ///{
-            ///    _dbContext = dbContext;
-            ///}
-            ///public int Add(Employee employee)
-            ///{
-            ///    _dbContext.Employees.Add(employee);
-            ///    return _dbContext.SaveChanges();
-            ///}
-            ///
-            ///public int Delete(Employee employee)
-            ///{
-            ///    _dbContext.Employees.Remove(employee);
-            ///    return _dbContext.SaveChanges();
-            ///}
-            ///
-            ///public IEnumerable<Employee> GetAll()
-            ///    => _dbContext.Employees.ToList();
-            ///
-            ///
-            ///public Employee GetById(int id)
-            ///{
-            ///    return _dbContext.Employees.Find(id);
-            ///}
-            ///
-            ///public int Update(Employee employee)
-            ///{
-            ///    _dbContext.Employees.Update(employee);
-            ///    return _dbContext.SaveChanges();
-            ///} 
-            #endregion
-
+        public IQueryable<Employee> SearchEmployeeByName(string name)
+        {
+            return _context.Employees.Where(E => E.Name.ToLower().Contains(name.ToLower()));
         }
+
+
+
+
+
+        #region Before Using Generic Repository
+        ///private readonly MVCDemoDbContext _dbContext;
+        ///
+        ///public EmployeeRepository(MVCDemoDbContext dbContext)
+        ///{
+        ///    _dbContext = dbContext;
+        ///}
+        ///public int Add(Employee employee)
+        ///{
+        ///    _dbContext.Employees.Add(employee);
+        ///    return _dbContext.SaveChanges();
+        ///}
+        ///
+        ///public int Delete(Employee employee)
+        ///{
+        ///    _dbContext.Employees.Remove(employee);
+        ///    return _dbContext.SaveChanges();
+        ///}
+        ///
+        ///public IEnumerable<Employee> GetAll()
+        ///    => _dbContext.Employees.ToList();
+        ///
+        ///
+        ///public Employee GetById(int id)
+        ///{
+        ///    return _dbContext.Employees.Find(id);
+        ///}
+        ///
+        ///public int Update(Employee employee)
+        ///{
+        ///    _dbContext.Employees.Update(employee);
+        ///    return _dbContext.SaveChanges();
+        ///} 
+        #endregion
+
+    }
     }

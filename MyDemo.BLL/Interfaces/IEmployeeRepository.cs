@@ -10,6 +10,7 @@ namespace MyDemo.BLL.Interfaces
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
         IQueryable<Employee> GetEmployeeByAddress(string address);
+        IQueryable<Employee> SearchEmployeeByName(string name);
 
         #region Before Using Generic Repository
         ///Signature of 5 methods

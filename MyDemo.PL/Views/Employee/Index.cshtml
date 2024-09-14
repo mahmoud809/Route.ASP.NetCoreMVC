@@ -7,8 +7,20 @@
 <h1>All Employees</h1>
 <br />
 <br />
-<a asp-controller="Employee" asp-action="Create" class="btn btn-success mb-3"> Add A New Employee</a>
+<a asp-controller="Employee" asp-action="Create" class="btn btn-success mb-3"> Create New Employee</a>
 <br />
+
+<div class="row justify-content-center align-items-center mb-5 mt-3">
+    <form asp-action="Index" class="row col-8 offset-1">
+        <div class="col-8">
+            <input class="form-control" type="text" name="SearchValue" placeholder="Search By Name..." />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Search" class="btn btn-outline-success" />
+        </div>
+    </form>
+</div>
+
 
 @if (Model.Count() > 0)
 {

@@ -22,13 +22,23 @@ namespace MyDemo.PL.Controllers
         }
 
         // /Employee/Index
-        public IActionResult Index()
+        public IActionResult Index(string SearchValue)
         {
-            var employees = _employeeRepository.GetAll();
+            if(string.IsNullOrEmpty(SearchValue))
+            {
+                var employees = _employeeRepository.GetAll();
 
-            var mappedEmployees = _mapper.Map<IEnumerable<Employee> , IEnumerable<EmployeeViewModel>>(employees);
+                var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
 
-            return View(mappedEmployees);
+                return View(mappedEmployees);
+            }
+            else
+            {
+                var employees = _employeeRepository.SearchEmployeeByName(SearchValue);
+                var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
+
+                return View(mappedEmployees);
+            }
         }
 
         [HttpGet]

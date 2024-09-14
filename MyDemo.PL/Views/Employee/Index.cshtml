@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 @{
     ViewData["Title"] = "All Employees";
@@ -24,7 +24,7 @@
                 <th>@Html.DisplayNameFor(E => E.Phone)</th>
                 <th>@Html.DisplayNameFor(E => E.IsActive)</th>
                 <th>@Html.DisplayNameFor(E => E.HireDate)</th>
-                <th>@Html.DisplayNameFor(E => E.DateOfCreation)</th>
+                
                 <th>Details</th>
                 <th>Update</th>
                 <th>Delete</th>
@@ -45,7 +45,7 @@
                     <td>@employee.Phone</td>
                     <td>@employee.IsActive</td>
                     <td>@employee.HireDate</td>
-                    <td>@employee.DateOfCreation</td>
+                    
 
                     <partial name="_ButtonsPartialView" model="@employee.Id" />
 

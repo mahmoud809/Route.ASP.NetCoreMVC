@@ -1,4 +1,4 @@
-﻿@model Employee
+﻿@model EmployeeViewModel
 
 @{
     var departments = new SelectList(ViewData["Departments"] as IEnumerable<Department>, "Id", "Name");
@@ -46,11 +46,6 @@
 
 </div>
 
-<div>
-    <label class="col-form-label" asp-for="DateOfCreation"></label>
-    <input class="form-control mb-3" asp-for="DateOfCreation" />
-
-</div>
 
 <div>
     <label class="col-form-label" asp-for="IsActive"></label>

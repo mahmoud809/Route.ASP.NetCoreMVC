@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MyDemo.BLL.Interfaces;
 using MyDemo.BLL.Repositories;
 using MyDemo.DAL.Data.Contexts;
+using MyDemo.PL.Mapping_Profiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,9 @@ namespace MyDemo.PL
             services.AddDbContext<MVCDemoDbContext>(options => 
             
             options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            services.AddAutoMapper(M => M.AddProfile(new DepartmentProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

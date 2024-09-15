@@ -30,11 +30,15 @@ namespace MyDemo.PL
         {
             //Allow Dependancy to MVC Project
             services.AddControllersWithViews();
-            
+
+            #region Before Using UnitOfWork DesignPattern
             //Allow Dependancy to any Class Implements IDepartmentRepository
             //AddScoped means => Request åíÝÖá ÚÇíÔ Øæá ÝÊÑÉ Çá  object Çä Çá 
-            services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //Ask Clr If any one ask you for creating an object from any class implementing IDepartmentRepository 
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();                                                                    //Create it and inject it.
+            //services.AddScoped<IDepartmentRepository , DepartmentRepository>(); //Ask Clr If any one ask you for creating an object from any class implementing IDepartmentRepository 
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();  
+            #endregion                                                                   //Create it and inject it.
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<MVCDemoDbContext>(options => 
             

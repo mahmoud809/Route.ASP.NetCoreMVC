@@ -9,16 +9,22 @@ namespace MyDemo.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IMapper _mapper;
+        ///Before Using UnitOfWork
+        ///private readonly IEmployeeRepository _employeeRepository;
+        ///private readonly IDepartmentRepository _departmentRepository;
+        
 
-        public EmployeeController(IEmployeeRepository employeeRepository , IDepartmentRepository departmentRepository ,IMapper mapper ) //1-Ask CLR for Creating an Object from Class Implementing IEmployeeRepository
-                                                                                //2-Allow dependancy into the Container of servies    
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public EmployeeController(IUnitOfWork unitOfWork /*IEmployeeRepository employeeRepository , IDepartmentRepository departmentRepository */,IMapper mapper )
         {
-            _employeeRepository = employeeRepository;
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            
+            ///Before using unitofwork
+            ///_employeeRepository = employeeRepository;
+            ///_departmentRepository = departmentRepository;
         }
 
         // /Employee/Index
@@ -26,7 +32,7 @@ namespace MyDemo.PL.Controllers
         {
             if(string.IsNullOrEmpty(SearchValue))
             {
-                var employees = _employeeRepository.GetAll();
+                var employees = _unitOfWork.EmployeeRepository.GetAll();
 
                 var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
 
@@ -34,7 +40,7 @@ namespace MyDemo.PL.Controllers
             }
             else
             {
-                var employees = _employeeRepository.SearchEmployeeByName(SearchValue);
+                var employees = _unitOfWork.EmployeeRepository.SearchEmployeeByName(SearchValue);
                 var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
 
                 return View(mappedEmployees);
@@ -44,7 +50,7 @@ namespace MyDemo.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewData["Departments"] = _departmentRepository.GetAll();
+            ViewData["Departments"] = _unitOfWork.DepartmentRepository.GetAll();
             return View();
         }
 
@@ -59,9 +65,9 @@ namespace MyDemo.PL.Controllers
                                                                                       //How can mapper map from EmpolyeeVM to Employee?
                                                                                       //We should create a profile
 
-                var recordAffected = _employeeRepository.Add(mappedEmp);
-                if (recordAffected > 0)
-                    return RedirectToAction(nameof(Index));
+                _unitOfWork.EmployeeRepository.Add(mappedEmp);
+                _unitOfWork.Complete();
+                return RedirectToAction(nameof(Index));
             }
             return View(employeeVM);
         }
@@ -71,7 +77,7 @@ namespace MyDemo.PL.Controllers
             if (id is null)
                 return BadRequest();
 
-            var employee = _employeeRepository.GetById(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id.Value);
             if (employee is null)
                 return NotFound();
     
@@ -102,7 +108,8 @@ namespace MyDemo.PL.Controllers
                 {
                     var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-                    int AffectedRow = _employeeRepository.Update(mappedEmp);
+                    _unitOfWork.EmployeeRepository.Update(mappedEmp);
+                    _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -131,7 +138,8 @@ namespace MyDemo.PL.Controllers
             {
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-                int AffectedRows = _employeeRepository.Delete(mappedEmp);
+                _unitOfWork.EmployeeRepository.Delete(mappedEmp);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (System.Exception ex)

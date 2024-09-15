@@ -27,20 +27,23 @@ namespace MyDemo.PL.Controllers
     //7-اللي عنده overrideOnCofiguring ويروح ي connectionStringمعاياال  Configureهيلاقني معرفه اني ب  
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        //private readonly IDepartmentRepository _departmentRepository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository departmentRepository , IMapper mapper) //1-Ask CLR for Creating an Object from Class Implementing IDepartmentRepository
+        public DepartmentController(IUnitOfWork unitOfWork /*IDepartmentRepository departmentRepository*/ , IMapper mapper) //1-Ask CLR for Creating an Object from Class Implementing IDepartmentRepository
                                                                                 //2-Allow dependancy into the Container of servies    
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
+            //_departmentRepository = departmentRepository;
             _mapper = mapper;
         }
 
         // /Department/Index
         public IActionResult Index()
         {
-            var departments = _departmentRepository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll();
 
             var mappedDepts = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(departments);
             
@@ -61,9 +64,9 @@ namespace MyDemo.PL.Controllers
             {
                 var mappedDept = _mapper.Map< DepartmentViewModel , Department>(departmentVM);
 
-                var recordAffected = _departmentRepository.Add(mappedDept);
-                if(recordAffected > 0)
-                    return RedirectToAction(nameof(Index));
+                _unitOfWork.DepartmentRepository.Add(mappedDept);
+                _unitOfWork.Complete();
+                return RedirectToAction(nameof(Index));
             }
             return View(departmentVM);
         }
@@ -73,7 +76,7 @@ namespace MyDemo.PL.Controllers
             if(id is null)
                 return BadRequest();
 
-            var department = _departmentRepository.GetById(id.Value);
+            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
             if(department is null)
                 return NotFound();
 
@@ -104,7 +107,8 @@ namespace MyDemo.PL.Controllers
                 {
                     var mappedDept = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
 
-                    int AffectedRow = _departmentRepository.Update(mappedDept);
+                    _unitOfWork.DepartmentRepository.Update(mappedDept);
+                    _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -133,7 +137,8 @@ namespace MyDemo.PL.Controllers
             {
                 var mappedDept = _mapper.Map< DepartmentViewModel , Department>(departmentVM);
 
-                int AffectedRows = _departmentRepository.Delete(mappedDept);
+                _unitOfWork.DepartmentRepository.Delete(mappedDept);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (System.Exception ex)

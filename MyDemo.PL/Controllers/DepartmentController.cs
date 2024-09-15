@@ -4,6 +4,7 @@ using MyDemo.BLL.Interfaces;
 using MyDemo.DAL.Models;
 using MyDemo.PL.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyDemo.PL.Controllers
 {
@@ -41,9 +42,9 @@ namespace MyDemo.PL.Controllers
         }
 
         // /Department/Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            var departments = await _unitOfWork.DepartmentRepository.GetAll();
 
             var mappedDepts = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(departments);
             
@@ -57,26 +58,26 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(DepartmentViewModel departmentVM)
+        public async Task<IActionResult> Create(DepartmentViewModel departmentVM)
         {
             //We Should make validations before submit this passing department => [Server side validation]
             if(ModelState.IsValid)
             {
                 var mappedDept = _mapper.Map< DepartmentViewModel , Department>(departmentVM);
 
-                _unitOfWork.DepartmentRepository.Add(mappedDept);
-                _unitOfWork.Complete();
+                await _unitOfWork.DepartmentRepository.Add(mappedDept);
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             return View(departmentVM);
         }
 
-        public IActionResult Details(int? id , string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id , string ViewName = "Details")
         {
             if(id is null)
                 return BadRequest();
 
-            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
+            var department = await _unitOfWork.DepartmentRepository.GetById(id.Value);
             if(department is null)
                 return NotFound();
 
@@ -86,7 +87,7 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public Task<IActionResult> Edit(int? id)
         {
 
             return Details(id , "Edit");
@@ -99,7 +100,7 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(DepartmentViewModel departmentVM , [FromRoute] int id)
+        public async Task<IActionResult> Edit(DepartmentViewModel departmentVM , [FromRoute] int id)
         {
             if(ModelState.IsValid)
             {
@@ -108,7 +109,7 @@ namespace MyDemo.PL.Controllers
                     var mappedDept = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
 
                     _unitOfWork.DepartmentRepository.Update(mappedDept);
-                    _unitOfWork.Complete();
+                    await _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -122,13 +123,13 @@ namespace MyDemo.PL.Controllers
             
         }
 
-        public IActionResult Delete(int? id)
+        public Task<IActionResult> Delete(int? id)
         {
             return Details(id, "Delete");
         }
 
         [HttpPost]
-        public IActionResult Delete(DepartmentViewModel departmentVM, [FromRoute] int id)
+        public async Task<IActionResult> Delete(DepartmentViewModel departmentVM, [FromRoute] int id)
         {
             if (id != departmentVM.Id)
                 return BadRequest();
@@ -138,7 +139,7 @@ namespace MyDemo.PL.Controllers
                 var mappedDept = _mapper.Map< DepartmentViewModel , Department>(departmentVM);
 
                 _unitOfWork.DepartmentRepository.Delete(mappedDept);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (System.Exception ex)

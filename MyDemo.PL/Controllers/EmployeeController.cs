@@ -5,6 +5,7 @@ using MyDemo.DAL.Models;
 using MyDemo.PL.Helpers;
 using MyDemo.PL.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyDemo.PL.Controllers
 {
@@ -29,11 +30,11 @@ namespace MyDemo.PL.Controllers
         }
 
         // /Employee/Index
-        public IActionResult Index(string SearchValue)
+        public async Task<IActionResult> Index(string SearchValue)
         {
             if(string.IsNullOrEmpty(SearchValue))
             {
-                var employees = _unitOfWork.EmployeeRepository.GetAll();
+                var employees = await _unitOfWork.EmployeeRepository.GetAll();
 
                 var mappedEmployees = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
 
@@ -49,14 +50,14 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["Departments"] = _unitOfWork.DepartmentRepository.GetAll();
+            ViewData["Departments"] = await _unitOfWork.DepartmentRepository.GetAll();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Create(EmployeeViewModel employeeVM)
         {
             //We Should make validations before submit this passing Employee => [Server side validation]
             if (ModelState.IsValid)
@@ -66,19 +67,19 @@ namespace MyDemo.PL.Controllers
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM); //Next step : Ask Your self
                                                                                       //How can mapper map from EmpolyeeVM to Employee?
                                                                                       //We should create a profile
-                _unitOfWork.EmployeeRepository.Add(mappedEmp);
-                _unitOfWork.Complete();
+                await _unitOfWork.EmployeeRepository.Add(mappedEmp);
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             return View(employeeVM);
         }
 
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (id is null)
                 return BadRequest();
 
-            var employee = _unitOfWork.EmployeeRepository.GetById(id.Value);
+            var employee = await _unitOfWork.EmployeeRepository.GetById(id.Value);
             if (employee is null)
                 return NotFound();
     
@@ -88,7 +89,7 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public Task<IActionResult> Edit(int? id)
         {
 
             return Details(id, "Edit");
@@ -101,7 +102,7 @@ namespace MyDemo.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EmployeeViewModel employeeVM, [FromRoute] int id)
+        public async Task<IActionResult> Edit(EmployeeViewModel employeeVM, [FromRoute] int id)
         {
             if (ModelState.IsValid)
             {
@@ -111,7 +112,7 @@ namespace MyDemo.PL.Controllers
                     var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
                     _unitOfWork.EmployeeRepository.Update(mappedEmp);
-                    _unitOfWork.Complete();
+                    await _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -125,13 +126,13 @@ namespace MyDemo.PL.Controllers
 
         }
 
-        public IActionResult Delete(int? id)
+        public Task<IActionResult> Delete(int? id)
         {
             return Details(id, "Delete");
         }
 
         [HttpPost]
-        public IActionResult Delete(EmployeeViewModel employeeVM, [FromRoute] int id)
+        public async Task<IActionResult> Delete(EmployeeViewModel employeeVM, [FromRoute] int id)
         {
             if (id != employeeVM.Id)
                 return BadRequest();
@@ -141,7 +142,7 @@ namespace MyDemo.PL.Controllers
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
                 _unitOfWork.EmployeeRepository.Delete(mappedEmp);
-                int count = _unitOfWork.Complete();
+                int count = await _unitOfWork.Complete();
 
                 if (count > 0)
                     DocumentSettings.DeleteFile(employeeVM.ImageName, "images");

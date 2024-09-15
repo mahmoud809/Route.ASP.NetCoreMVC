@@ -9,9 +9,9 @@ namespace MyDemo.BLL.Interfaces
     public interface IGenericRepository<T>
     {
         //Contain Signature of 5 methods for T Entity
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Add(T entity);
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(int id);
+        Task Add(T entity);
         void Update(T entity);
         void Delete(T entity);
     }

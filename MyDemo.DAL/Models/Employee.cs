@@ -33,6 +33,7 @@ namespace MyDemo.DAL.Models
 
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
+        public string ImageName { get; set; }
         public bool IsActive { get; set; }
 
         public int? DepartmentId { get; set; }

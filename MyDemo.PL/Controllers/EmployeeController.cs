@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyDemo.BLL.Interfaces;
 using MyDemo.DAL.Models;
+using MyDemo.PL.Helpers;
 using MyDemo.PL.ViewModels;
 using System.Collections.Generic;
 
@@ -61,10 +62,10 @@ namespace MyDemo.PL.Controllers
             if (ModelState.IsValid)
             {
                 //Mapping from EmpView to Employee to be able to store it in DB.
+                employeeVM.ImageName = DocumentSettings.UplodeFile(employeeVM.Image, "images");
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM); //Next step : Ask Your self
                                                                                       //How can mapper map from EmpolyeeVM to Employee?
                                                                                       //We should create a profile
-
                 _unitOfWork.EmployeeRepository.Add(mappedEmp);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
@@ -106,6 +107,7 @@ namespace MyDemo.PL.Controllers
             {
                 try
                 {
+                    employeeVM.ImageName = DocumentSettings.UplodeFile(employeeVM.Image, "images");
                     var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
                     _unitOfWork.EmployeeRepository.Update(mappedEmp);

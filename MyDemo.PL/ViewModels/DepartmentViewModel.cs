@@ -1,24 +1,20 @@
-﻿using System;
+﻿using MyDemo.DAL.Models;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
-namespace MyDemo.DAL.Models
+namespace MyDemo.PL.ViewModels
 {
-    public class Department
+    public class DepartmentViewModel
     {
         public int Id { get; set; }
-        
-        [Required] 
+
+        [Required(ErrorMessage = "Code is required..!")] //For FrontEnd
         public string Code { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Name is required..!")] // For FrontEnd
         public string Name { get; set; }
-        
-        public DateTime DateOfCreation { get; set; }
+
 
         //Navigational Property [Many]
         ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();

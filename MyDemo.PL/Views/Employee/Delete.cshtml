@@ -1,4 +1,4 @@
-﻿@model Employee
+﻿@model EmployeeViewModel
 @{
     ViewData["Title"] = "Delete";
 }
@@ -7,59 +7,8 @@
 <br />
 
 <form asp-action="Delete">
-    <div>
-        <label class="col-form-label" asp-for="Name"></label>
-        <input readonly class="form-control" asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Age"></label>
-        <input readonly class="form-control" asp-for="Age" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Salary"></label>
-        <input readonly class="form-control mb-3" asp-for="Salary" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Address"></label>
-        <input readonly class="form-control" asp-for="Address" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Email"></label>
-        <input readonly class="form-control mb-3" asp-for="Email" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Phone"></label>
-        <input readonly class="form-control mb-3" asp-for="Phone" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="HireDate"></label>
-        <input readonly class="form-control mb-3" asp-for="HireDate" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="DateOfCreation"></label>
-        <input readonly class="form-control mb-3" asp-for="DateOfCreation" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="IsActive"></label>
-        <input readonly class="mb-3" asp-for="IsActive" />
-
-    </div>
+    
+    <partial name="PartialViews/_DetailsDeleteEmployeeView" />
 
     <input type="submit" value="Delete" class="btn btn-outline-danger" /> |
     <a class="btn btn-light" asp-controller="Employee" asp-action="Index">Back To List</a>

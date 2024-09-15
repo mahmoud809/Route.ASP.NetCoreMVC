@@ -1,4 +1,4 @@
-﻿@model Employee;
+﻿@model EmployeeViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -10,60 +10,15 @@
 <div class="text-danger" asp-validation-summary="All"></div>
 
 <form asp-action="Create">
-    <div>
-        <label class="col-form-label" asp-for="Name"></label>
-        <input class="form-control" asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Age"></label>
-        <input class="form-control" asp-for="Age" />
-        <span asp-validation-for="Age" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Salary"></label>
-        <input class="form-control mb-3" asp-for="Salary" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Address"></label>
-        <input class="form-control" asp-for="Address" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="Email"></label>
-        <input class="form-control mb-3" asp-for="Email" />
-
-    </div>
     
-    <div>
-        <label class="col-form-label" asp-for="Phone"></label>
-        <input class="form-control mb-3" asp-for="Phone" />
+    <partial name="PartialViews/_CreateEditEmployeeView" />
 
-    </div>
-   
-    <div>
-        <label class="col-form-label" asp-for="HireDate"></label>
-        <input class="form-control mb-3" asp-for="HireDate" />
-
-    </div>
-   
-    <div>
-        <label class="col-form-label" asp-for="DateOfCreation"></label>
-        <input class="form-control mb-3" asp-for="DateOfCreation" />
-
-    </div>
-
-    <div>
-        <label class="col-form-label" asp-for="IsActive"></label>
-        <input class="mb-3" asp-for="IsActive" />
-
-    </div>
     <input type="submit" value="Create" class="btn btn-outline-primary" /> |
     <a class="btn btn-light" asp-controller="Employee" asp-action="Index">Back To List</a>
 
 </form>
+
+@section ValidateScriptSection
+{
+    <partial name="_ValidationScriptsPartial" />
+}

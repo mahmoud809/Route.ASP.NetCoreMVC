@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 @{
     ViewData["Title"] = "All Employees";
@@ -7,8 +7,20 @@
 <h1>All Employees</h1>
 <br />
 <br />
-<a asp-controller="Employee" asp-action="Create" class="btn btn-success mb-3"> Add A New Employee</a>
+<a asp-controller="Employee" asp-action="Create" class="btn btn-success mb-3"> Create New Employee</a>
 <br />
+
+<div class="row justify-content-center align-items-center mb-5 mt-3">
+    <form asp-action="Index" class="row col-8 offset-1">
+        <div class="col-8">
+            <input class="form-control" type="text" name="SearchValue" placeholder="Search By Name..." />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Search" class="btn btn-outline-success" />
+        </div>
+    </form>
+</div>
+
 
 @if (Model.Count() > 0)
 {
@@ -19,11 +31,12 @@
                 <th>@Html.DisplayNameFor(E => E.Age)</th>
                 <th>@Html.DisplayNameFor(E => E.Salary)</th>
                 <th>@Html.DisplayNameFor(E => E.Address)</th>
+                <th>@Html.DisplayNameFor(E => E.Department)</th>
                 <th>@Html.DisplayNameFor(E => E.Email)</th>
                 <th>@Html.DisplayNameFor(E => E.Phone)</th>
                 <th>@Html.DisplayNameFor(E => E.IsActive)</th>
                 <th>@Html.DisplayNameFor(E => E.HireDate)</th>
-                <th>@Html.DisplayNameFor(E => E.DateOfCreation)</th>
+                
                 <th>Details</th>
                 <th>Update</th>
                 <th>Delete</th>
@@ -38,26 +51,15 @@
                     <td>@employee.Age</td>
                     <td>@employee.Salary</td>
                     <td>@employee.Address</td>
+                    @* <td>@employee.Department?.Name ?? "NA"</td> *@
+                    <td>@Html.DisplayFor(M => employee.Department.Name)</td> @* Cuz if Department came with NULL *@
                     <td>@employee.Email</td>
                     <td>@employee.Phone</td>
                     <td>@employee.IsActive</td>
                     <td>@employee.HireDate</td>
-                    <td>@employee.DateOfCreation</td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-outline-warning">
-                            <i class="fa-solid fa-eye"></i> Details
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-outline-success">
-                            <i class="fa-solid fa-pen-to-square"></i> Update
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-outline-danger">
-                            <i class="fa-solid fa-trash"></i> Delete
-                        </a>
-                    </td>
+                    
+
+                    <partial name="_ButtonsPartialView" model="@employee.Id" />
 
                 </tr>
 

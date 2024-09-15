@@ -11,8 +11,8 @@ namespace MyDemo.BLL.Interfaces
         //Contain Signature of 5 methods for T Entity
         IEnumerable<T> GetAll();
         T GetById(int id);
-        int Add(T entity);
-        int Update(T entity);
-        int Delete(T entity);
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyDemo.DAL.Data.Contexts;
 
 namespace MyDemo.DAL.Data.Migrations
 {
     [DbContext(typeof(MVCDemoDbContext))]
-    partial class MVCDemoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916051829_CustomizeUsersTable")]
+    partial class CustomizeUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

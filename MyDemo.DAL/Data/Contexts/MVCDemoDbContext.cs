@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyDemo.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyDemo.DAL.Data.Contexts
 {
-    public class MVCDemoDbContext : DbContext
+    public class MVCDemoDbContext : IdentityDbContext<ApplicationUser>
     {
         public MVCDemoDbContext(DbContextOptions<MVCDemoDbContext> options) : base(options)
         {

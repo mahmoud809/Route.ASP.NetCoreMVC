@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyDemo.DAL.Models;
+using MyDemo.PL.Helpers;
 using MyDemo.PL.ViewModels;
 using System.Threading.Tasks;
 
@@ -82,8 +83,59 @@ namespace MyDemo.PL.Controllers
             }
             return View(model);
 		}
-		
-        
+
+
         #endregion
+
+        #region SignOut
+        public new async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
+        #endregion
+
+        #region ForgetPassword
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendEmail(ForgetPasswordViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user is not null)
+                {
+                    var token = _userManager.GeneratePasswordResetTokenAsync(user); //==> Token will be valid just for this User only one time
+
+                    //shape of Link => https://localhost:44329/Account/ResetPassword?email=mahmoud@gmail.com&tokend=212sfsdfsfdsd
+
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token} , "https" , "localhost:44329");
+
+
+                    var email = new Email()
+                    {
+                        Subject = "Reset Password",
+                        To = model.Email,
+                        Body = "ResetPasswordLink"
+                    };
+                    //EmailSettings.SendEmail(email);
+                    return RedirectToAction(nameof(CheckYourInbox));
+                    
+                }
+                ModelState.AddModelError(string.Empty, "Email is not existed");
+            }
+            return View(model);
+        }
+
+        public IActionResult CheckYourInbox()
+        {
+            return View();
+        }
+		#endregion
 	}
 }

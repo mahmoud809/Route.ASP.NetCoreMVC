@@ -110,20 +110,20 @@ namespace MyDemo.PL.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user is not null)
                 {
-                    var token = _userManager.GeneratePasswordResetTokenAsync(user); //==> Token will be valid just for this User only one time
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user); //==> Token will be valid just for this User only one time
 
-                    //shape of Link => https://localhost:44329/Account/ResetPassword?email=mahmoud@gmail.com&tokend=212sfsdfsfdsd
+                    //shape of Link => https://{Request.schema}/Account/ResetPassword?email=mahmoud@gmail.com&tokend=212sfsdfsfdsd
 
-                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token} , "https" , "localhost:44329");
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token} , Request.Scheme);
 
 
                     var email = new Email()
                     {
                         Subject = "Reset Password",
-                        To = model.Email,
-                        Body = "ResetPasswordLink"
+                        To = user.Email,
+                        Body = passwordResetLink
                     };
-                    //EmailSettings.SendEmail(email);
+                    EmailSettings.SendEmail(email);
                     return RedirectToAction(nameof(CheckYourInbox));
                     
                 }
@@ -136,6 +136,40 @@ namespace MyDemo.PL.Controllers
         {
             return View();
         }
-		#endregion
+
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		{
+            if (ModelState.IsValid)
+            {
+                string email = TempData["email"] as string;
+                string token = TempData["token"] as string;
+
+                var user = await _userManager.FindByEmailAsync(email);
+
+                if (user is not null)
+                {
+					var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+
+					if (result.Succeeded)
+						return RedirectToAction(nameof(Login));
+
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError(string.Empty, error.Description);
+					}
+				}
+            }
+            return View(model);
+		}
+		
+        #endregion
 	}
 }

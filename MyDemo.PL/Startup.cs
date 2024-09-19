@@ -50,6 +50,7 @@ namespace MyDemo.PL
 			services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
 			services.AddAutoMapper(M => M.AddProfile(new DepartmentProfile()));
 			services.AddAutoMapper(M => M.AddProfile(new UserProfile()));
+			services.AddAutoMapper(M => M.AddProfile(new RoleProfile()));
 
 
             //Allow Dependancy to use UserManger And SignInManger to be able to Create/delete/update user

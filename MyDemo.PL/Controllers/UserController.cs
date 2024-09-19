@@ -28,7 +28,7 @@ namespace MyDemo.PL.Controllers
 		{
 			if(string.IsNullOrEmpty(email))
 			{
-				var users = _userManager.Users.Select(U => new UserViewModel()
+				var users = await _userManager.Users.Select(U => new UserViewModel()
 				{
 					Id = U.Id,
 					FName = U.FName,
@@ -89,8 +89,14 @@ namespace MyDemo.PL.Controllers
             {
                 try
                 {
-                    var mappedUser = _mapper.Map<UserViewModel , ApplicationUser>(updatedUser);
-                    await _userManager.UpdateAsync(mappedUser);
+                    var user = await _userManager.FindByIdAsync(id); // i get user from database then upadate manually
+                    
+                    user.FName = updatedUser.FName;
+                    user.LName = updatedUser.LName;
+                    user.PhoneNumber = updatedUser.PhoneNumber;
+
+                    await _userManager.UpdateAsync(user);
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (System.Exception ex)
@@ -102,6 +108,30 @@ namespace MyDemo.PL.Controllers
 
 
 
+        }
+
+        public Task<IActionResult> Delete(string id)
+        {
+            return Details(id, "Delete");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDelete(string id)
+        {
+            
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                await _userManager.DeleteAsync(user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToAction("Error" , "Home");
+            }
         }
 
     }

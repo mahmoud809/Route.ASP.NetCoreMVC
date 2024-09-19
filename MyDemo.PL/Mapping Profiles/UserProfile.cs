@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MyDemo.DAL.Models;
+using MyDemo.PL.ViewModels;
 
 namespace MyDemo.PL.Mapping_Profiles
 {
@@ -7,7 +8,7 @@ namespace MyDemo.PL.Mapping_Profiles
     {
         public UserProfile()
         {
-            CreateMap<ApplicationUser, ApplicationUser>().ReverseMap();
+            CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
         }
     }
 }

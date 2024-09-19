@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDemo.DAL.Models;
@@ -13,13 +14,14 @@ namespace MyDemo.PL.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMapper _mapper;
 
-		public UserController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager)
+        public UserController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager , IMapper mapper)
         {
 			_userManager = userManager;
 			_signInManager = signInManager;
-			
-		}
+            _mapper = mapper;
+        }
 
         public async Task<IActionResult> Index(string email)
 		{
@@ -53,5 +55,19 @@ namespace MyDemo.PL.Controllers
 				return View(new List<UserViewModel>() { mappedUser } );
 			}
 		}
-	}
+
+        public async Task<IActionResult> Details(string id, string ViewName = "Details")
+        {
+            if (id is null)
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+                return NotFound();
+
+            var mappedUser = _mapper.Map<ApplicationUser, UserViewModel>(user);
+
+            return View(ViewName, mappedUser);
+        }
+    }
 }

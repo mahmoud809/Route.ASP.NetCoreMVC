@@ -7,7 +7,7 @@ namespace MyDemo.PL.Mapping_Profiles
     {
         public UserProfile()
         {
-            CreateMap<ApplicationUser, ApplicationUser>();
+            CreateMap<ApplicationUser, ApplicationUser>().ReverseMap();
         }
     }
 }

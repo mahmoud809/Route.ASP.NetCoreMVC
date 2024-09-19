@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDemo.DAL.Models;
+using MyDemo.PL.Helpers;
 using MyDemo.PL.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,5 +70,39 @@ namespace MyDemo.PL.Controllers
 
             return View(ViewName, mappedUser);
         }
+
+        [HttpGet]
+        public Task<IActionResult> Edit(string id)
+        {
+
+            return Details(id, "Edit");
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserViewModel updatedUser, [FromRoute] string id)
+        {
+            if (id != updatedUser.Id)
+                return BadRequest();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var mappedUser = _mapper.Map<UserViewModel , ApplicationUser>(updatedUser);
+                    await _userManager.UpdateAsync(mappedUser);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (System.Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+            }
+            return View(updatedUser);
+
+
+
+        }
+
     }
 }

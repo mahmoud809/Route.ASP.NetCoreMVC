@@ -19,8 +19,8 @@ namespace MyDemo.BLL.Repositories
         {
             _dbContext = dbContext;
         }
-        public void Add(T entity)
-            => _dbContext.Add(entity);
+        public async Task Add(T entity)
+            => await _dbContext.AddAsync(entity);
         
         
 
@@ -29,19 +29,19 @@ namespace MyDemo.BLL.Repositories
            
         
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             //This is not the best solution to load department [Eager Loading] We should use "Specification Design Pattern"
             //But we will take it in API Coures [So Don't Forget to come back to this code after API and Refactoring it with specification design pattern]
             if(typeof(T) == typeof(Employee))
-                return (IEnumerable<T>)_dbContext.Set<Employee>().Include(E => E.Department).ToList();
+                return (IEnumerable<T>) await _dbContext.Set<Employee>().Include(E => E.Department).ToListAsync();
             else
-                return _dbContext.Set<T>().ToList();
+                return await _dbContext.Set<T>().ToListAsync();
         }
         
 
-        public T GetById(int id)
-            => _dbContext.Set<T>().Find(id);
+        public async Task<T> GetById(int id)
+            => await _dbContext.Set<T>().FindAsync(id);
 
         public void Update(T entity)
             => _dbContext.Update(entity);

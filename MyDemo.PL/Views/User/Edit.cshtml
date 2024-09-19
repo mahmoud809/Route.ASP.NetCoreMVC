@@ -1,0 +1,26 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h1>Edit @Model.FName's Info</h1>
+
+
+
+<form asp-action="Edit" enctype="multipart/form-data">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <partial name="PartialViews/_CreateEditUserView" />
+
+    <input type="submit" value="Save Changes" class="btn btn-outline-primary" /> |
+    <a class="btn btn-light" asp-controller="User" asp-action="Index">Back To List</a>
+
+</form>
+
+@section ValidateScriptSection
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

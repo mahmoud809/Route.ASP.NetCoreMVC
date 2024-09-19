@@ -1,6 +1,7 @@
 ﻿using MyDemo.DAL.Models;
 using System.ComponentModel.DataAnnotations;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace MyDemo.PL.ViewModels
 {
@@ -29,7 +30,8 @@ namespace MyDemo.PL.ViewModels
 
         [Display(Name = "Hiring Date")]
         public DateTime HireDate { get; set; }
-
+        public IFormFile Image { get; set; }
+        public string ImageName { get; set; }
         public bool IsActive { get; set; }
 
         public int? DepartmentId { get; set; }

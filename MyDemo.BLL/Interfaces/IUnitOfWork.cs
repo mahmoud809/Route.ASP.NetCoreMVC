@@ -12,7 +12,7 @@ namespace MyDemo.BLL.Interfaces
         public IEmployeeRepository EmployeeRepository { get; set; } // It's just a signature
         public IDepartmentRepository DepartmentRepository { get; set; } // It's just a signature
 
-        public int Complete();
+        public Task<int> Complete();
         
     }
 }

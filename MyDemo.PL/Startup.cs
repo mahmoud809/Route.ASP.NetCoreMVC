@@ -60,7 +60,7 @@ namespace MyDemo.PL
                     .AddCookie(options =>
                     {
                         options.LoginPath = "Account/Login";
-                        options.AccessDeniedPath = "Home/Error";
+                        options.AccessDeniedPath = "Account/AccessDenied";
                     });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>

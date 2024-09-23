@@ -169,7 +169,14 @@ namespace MyDemo.PL.Controllers
             }
             return View(model);
 		}
-		
+
         #endregion
-	}
+
+        #region Access Denied
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+        #endregion
+    }
 }

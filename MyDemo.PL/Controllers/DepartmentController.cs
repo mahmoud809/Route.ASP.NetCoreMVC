@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyDemo.BLL.Interfaces;
 using MyDemo.DAL.Models;
@@ -26,6 +27,8 @@ namespace MyDemo.PL.Controllers
     //5- ClR will notice that class MVCDbContext depents on Creation an object from DbcontextOptions
     //6- ClR will Chain on the base class of DbContextOptions<MVCDbContext>
     //7-اللي عنده overrideOnCofiguring ويروح ي connectionStringمعاياال  Configureهيلاقني معرفه اني ب  
+
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

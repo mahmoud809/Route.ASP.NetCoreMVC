@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyDemo.BLL.Interfaces;
 using MyDemo.DAL.Models;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyDemo.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         ///Before Using UnitOfWork

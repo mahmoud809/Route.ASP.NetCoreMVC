@@ -13,6 +13,10 @@
 
     <partial name="PartialViews/_CreateEditRoleView" />
 
+    <div class="my-2">
+        <a asp-controller="Role" asp-action="AddOrRemoveUsers" class="btn btn-outline-secondary" asp-route-roleId ="@Model.Id">Add Or Remove Users</a>
+    </div>
+
     <input type="submit" value="Save Changes" class="btn btn-outline-primary" /> |
     <a class="btn btn-light" asp-controller="Role" asp-action="Index">Back To List</a>
 
